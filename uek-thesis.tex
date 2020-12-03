@@ -1,0 +1,73 @@
+\documentclass{lib/uekthesis}
+\usepackage{lib/uekthesis}
+
+
+
+%####################################################################
+% INFORMACJE O PRACY DYPLOMOWEJ
+%####################################################################
+
+% tytuł pracy dyplomowej
+\globalFullTitle{Interproceduralna analiza aliasingu wskaźników}
+
+% typ pracy, promotor
+\globalThesisType{Praca magisterska}
+\globalUnderTheSupervisonOf{Promotor}
+\globalSupervisor{prof. UEK Dariusz Put}
+
+% autor pracy i numer indeksu
+\globalFullAuthor{Piotr Osiewicz}
+\globalAuthorID{Nr albumu: 200860}
+
+% kierunek i specjalność studiów
+\globalDegreeprogramme{Kierunek: Informatyka stosowana}
+
+% nazwa uniwersytetu
+\globalFullUniversity{Uniwersytet Ekonomiczny w Krakowie}
+
+% wydział, kolegium, instytut
+\globalDepartment{Kolegium Nauk o Zarządzaniu i Jakości\\Instytut Zarządzania}
+
+% miejscowość i rok
+\globalCity{Kraków}
+\globalYear{2021}
+
+
+
+%####################################################################
+% STRUKTURA PRACY DYPLOMOWEJ
+%####################################################################
+
+\begin{document}
+
+% strona tytułowa
+\titlepages
+
+% spis treści
+\tableofcontents
+
+% rozdziały pracy 
+\include{introduction}
+\include{chapter1}
+\include{chapter2}
+\include{chapter3}
+\include{chapter4}
+\include{conclusion}
+
+% bibliografia
+\newpage
+\bibliographystyle{apalike}
+\bibliography{bibliography} 
+ 
+% spis tabel
+\newpage
+\listoftables
+
+% spis rysunków
+\newpage
+\listoffigures
+
+% dodatek, załącznik
+\include{appendix}
+
+\end{document}

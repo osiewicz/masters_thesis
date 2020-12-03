@@ -1,0 +1,182 @@
+% =============================================================================
+% Informacje o rodzajach publikacji i wymaganych polach można znaleść
+% pod adresem:
+% https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management
+% https://www.andy-roberts.net/res/writing/latex/bibentries.pdf 
+% =============================================================================
+@article{10.1109/12.241594,
+	author = {Chen, W. Y. and Chang, P. P. and Conte, T. M. and Hwu, W. W.},
+	title = {The Effect of Code Expanding Optimizations on Instruction Cache Design},
+	year = {1993},
+	issue_date = {September 1993},
+	publisher = {IEEE Computer Society},
+	address = {USA},
+	volume = {42},
+	number = {9},
+	issn = {0018-9340},
+	url = {https://doi.org/10.1109/12.241594},
+	doi = {10.1109/12.241594},
+	abstract = {Shows that code expanding optimizations have strong and nonintuitive implications on instruction cache design. Three types of code expanding optimizations are studied in this paper: instruction placement, function inline expansion, and superscalar optimizations. Overall, instruction placement reduces the miss ratio of small caches. Function inline expansion improves the performance for small cache sizes, but degrades the performance of medium caches. Superscalar optimizations increase the miss ratio for all cache sizes. However, they also increase the sequentiality of instruction access so that a simple load forwarding scheme effectively cancels the negative effects. Overall, the authors show that with load forwarding, the three types of code expanding optimizations jointly improve the performance of small caches and have little effect on large caches.},
+	journal = {IEEE Trans. Comput.},
+	month = sep,
+	pages = {1045–1057},
+	numpages = {13},
+	keywords = {C compiler, medium caches, function inline expansion, buffer storage, code expanding optimizations, optimisation., small caches, cache design, code expansion, superscalar optimizations, large caches, memory architecture, cache memory, miss ratio, instruction cache, code optimization, load forwarding, instruction placement}
+}
+
+@book{EngineeringACompiler,
+	author = {Torczon, Linda and Cooper, Keith},
+	title = {Engineering A Compiler},
+	year = {2007},
+	isbn = {012088478X},
+	publisher = {Morgan Kaufmann Publishers Inc.},
+	address = {San Francisco, CA, USA},
+	edition = {2nd}
+}
+
+@article{10.1145/325478.325519,
+	author = {Hind, Michael and Burke, Michael and Carini, Paul and Choi, Jong-Deok},
+	title = {Interprocedural Pointer Alias Analysis},
+	year = {1999},
+	issue_date = {July 1999},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	volume = {21},
+	number = {4},
+	issn = {0164-0925},
+	url = {https://doi.org/10.1145/325478.325519},
+	doi = {10.1145/325478.325519},
+	abstract = {We present practical approximation methods for computing and representing interprocedural aliases for a program written in a language that includes pointers, reference parameters, and recursion. We present the following contributions: (1) a framework for interprocedural pointer alias analysis that handles function pointers by constructing the program call graph while alias analysis is being performed; (2) a flow-sensitive interprocedural pointer alias analysis algorithm; (3) a flow-insensitive interprocedural pointer alias analysis algorithm; (4) a flow-insensitive interprocedural pointer alias analysis algorithm that incorporates kill information to improve precision; (5) empirical measurements of the efficiency and  precision of the three interprocedural alias analysis algorithms.},
+	journal = {ACM Trans. Program. Lang. Syst.},
+	month = jul,
+	pages = {848–894},
+	numpages = {47},
+	keywords = {pointer aliasing, program analysis, interprocedural analysis}
+}
+
+@article{HIND200131,
+	title = "Evaluating the effectiveness of pointer alias analyses",
+	journal = "Science of Computer Programming",
+	volume = "39",
+	number = "1",
+	pages = "31 - 55",
+	year = "2001",
+	note = "Static Program Analysis (SAS'98)",
+	issn = "0167-6423",
+	doi = "https://doi.org/10.1016/S0167-6423(00)00014-9",
+	url = "http://www.sciencedirect.com/science/article/pii/S0167642300000149",
+	author = "Michael Hind and Anthony Pioli",
+	abstract = "This paper describes an empirical comparison of the effectiveness of six context-insensitive pointer analysis algorithms that use varying degrees of flow-sensitivity. Four of the algorithms are flow-insensitive, one is flow-sensitive, and another is flow-insensitive, but uses precomputed flow-sensitive information. The effectiveness of each analysis is quantified in terms of compile-time efficiency and precision. Efficiency is reported by measuring CPU time and memory consumption of each analysis. Precision is reported by measuring the computed solutions at the program points where a pointer is dereferenced. The results of this paper will help implementors determine which pointer analysis is appropriate for their application."
+}
+
+@InProceedings{10.1007/BFb0032731,
+	author="Shapiro, Marc
+	and Horwitz, Susan",
+	editor="Van Hentenryck, Pascal",
+	title="The effects of the precision of pointer analysis",
+	booktitle="Static Analysis",
+	year="1997",
+	publisher="Springer Berlin Heidelberg",
+	address="Berlin, Heidelberg",
+	pages="16--34",
+	abstract="In order to analyze programs that manipulate pointers, it is necessary to have safe information about what each pointer might point to. There are many algorithms that can be used to determine this information, with varying degrees of accuracy. However, there has been very little previous work that addresses how much the relative accuracies of different pointer-analysis algorithms affect ``transitive'' results: the results of a subsequent analysis.",
+	isbn="978-3-540-69576-9"
+}
+
+
+@inproceedings{10.1145/379605.379665,
+	author = {Hind, Michael},
+	title = {Pointer Analysis: Haven't We Solved This Problem Yet?},
+	year = {2001},
+	isbn = {1581134134},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/379605.379665},
+	doi = {10.1145/379605.379665},
+	abstract = {During the past twenty-one years, over seventy-five papers and nine Ph.D. theses have been published on pointer analysis. Given the tomes of work on this topic one may wonder, “Haven'trdquo; we solved this problem yet?''  With input from many researchers in the field, this paper describes issues related to pointer analysis and remaining open problems.},
+	booktitle = {Proceedings of the 2001 ACM SIGPLAN-SIGSOFT Workshop on Program Analysis for Software Tools and Engineering},
+	pages = {54–61},
+	numpages = {8},
+	location = {Snowbird, Utah, USA},
+	series = {PASTE '01}
+}
+
+@inproceedings{10.1145/237721.237727,
+	author = {Steensgaard, Bjarne},
+	title = {Points-to Analysis in Almost Linear Time},
+	year = {1996},
+	isbn = {0897917693},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/237721.237727},
+	doi = {10.1145/237721.237727},
+	abstract = {We present an interprocedural flow-insensitive points-to analysis based on type inference methods with an almost linear time cost complexity To our knowledge, this is the asymptotically fastest non-trivial interprocedural points-to analysis algorithm yet described The algorithm is based on a non-standard type system. The type inferred for any variable represents a set of locations and includes a type which in turn represents a set of locations possibly pointed to by the variable. The type inferred for a function variable represents a set of functions It may point to and includes a type signature for these functions The results are equivalent to those of a flow-insensitive alias analysis (and control flow analysis) that assumes alias relations are reflexive and transitive.This work makes three contributions. The first is a type system for describing a universally valid storage shape graph for a program in linear space. The second is a constraint system which often leads to better results than the "obvious" constraint system for the given type system The third is an almost linear time algorithm for points-to analysis by solving a constraint system.},
+	booktitle = {Proceedings of the 23rd ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+	pages = {32–41},
+	numpages = {10},
+	location = {St. Petersburg Beach, Florida, USA},
+	series = {POPL '96}
+}
+
+@proceedings{ThinLTOJohnsonAminiLi,
+	title	= {ThinLTO: Scalable and incremental LTO},
+	editor	= {Teresa Johnson and Mehdi Amini and Xinliang David Li},
+	year	= {2017},
+	booktitle	= {Proceedings of the 2017 International Symposium on Code Generation and Optimization},
+	pages	= {111--121}
+}
+
+@phdthesis{Andersen94programanalysis,
+    author = {Lars Ole Andersen},
+    title = {Program Analysis and Specialization for the C Programming Language},
+    institution = {},
+    year = {1994}
+}
+
+@inproceedings{10.1145/349299.349311,
+	author = {Cheng, Ben-Chung and Hwu, Wen-Mei W.},
+	title = {Modular Interprocedural Pointer Analysis Using Access Paths: Design, Implementation, and Evaluation},
+	year = {2000},
+	isbn = {1581131992},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/349299.349311},
+	doi = {10.1145/349299.349311},
+	abstract = {In this paper we present a modular interprocedural pointer analysis 
+algorithm based on access-paths for C programs. We argue that access paths can reduce the overhead of representing context-sensitive transfer functions and effectively distinguish non-recursive heap objects. And when the modular analysis paradigm is used together with other techniques to handle type casts and function pointers, we are able to handle significant programs like those in the SPECcint92 and SPECcint95 suites. We have implemented the algorithm and tested it on a Pentium II 450 PC running Linux. The observed resource consumption and performance improvement are very encouraging.},
+	booktitle = {Proceedings of the ACM SIGPLAN 2000 Conference on Programming Language Design and Implementation},
+	pages = {57–69},
+	numpages = {13},
+	location = {Vancouver, British Columbia, Canada},
+	series = {PLDI '00}
+}
+
+@INPROCEEDINGS{1281665,
+
+  author={C. {Lattner} and V. {Adve}},
+
+  booktitle={International Symposium on Code Generation and Optimization, 2004. CGO 2004.}, 
+
+  title={LLVM: a compilation framework for lifelong program analysis   transformation}, 
+
+  year={2004},
+
+  volume={},
+
+  number={},
+
+  pages={75-86},
+
+  abstract={We describe LLVM (low level virtual machine), a compiler framework designed to support transparent, lifelong program analysis and transformation for arbitrary programs, by providing high-level information to compiler transformations at compile-time, link-time, run-time, and in idle time between runs. LLVM defines a common, low-level code representation in static single assignment (SSA) form, with several novel features: a simple, language-independent type-system that exposes the primitives commonly used to implement high-level language features; an instruction for typed address arithmetic; and a simple mechanism that can be used to implement the exception handling features of high-level languages (and setjmp/longjmp in C) uniformly and efficiently. The LLVM compiler framework and code representation together provide a combination of key capabilities that are important for practical, lifelong analysis and transformation of programs. To our knowledge, no existing compilation approach provides all these capabilities. We describe the design of the LLVM representation and compiler framework, and evaluate the design in three ways: (a) the size and effectiveness of the representation, including the type information it provides; (b) compiler performance for several interprocedural problems; and (c) illustrative examples of the benefits LLVM provides for several challenging compiler problems.},
+
+  keywords={program diagnostics;virtual machines;C language;exception handling;optimising compilers;program analysis;program transformation;low level virtual machine;compiler framework;compiler transformations;code representation;static single assignment form;language-independent type-system;typed address arithmetic;exception handling;compiler performance;Information analysis;Program processors;Performance analysis;High level languages;Virtual machining;Runtime;Arithmetic;Application software;Software safety;Algorithm design and analysis},
+
+  doi={10.1109/CGO.2004.1281665},
+
+  ISSN={},
+
+  month={March},
+}
+
+
+
