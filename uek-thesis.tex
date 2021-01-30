@@ -1,8 +1,8 @@
 \documentclass{lib/uekthesis}
 \usepackage{lib/uekthesis}
-
-
-
+\usepackage{amssymb,amsmath,amsthm}
+\setcitestyle{numbers}
+\setcitestyle{square}
 %####################################################################
 % INFORMACJE O PRACY DYPLOMOWEJ
 %####################################################################
@@ -49,14 +49,13 @@
 % rozdziały pracy 
 \include{introduction}
 \include{chapter1}
-\include{chapter2}
 \include{chapter3}
 \include{chapter4}
 \include{conclusion}
 
 % bibliografia
 \newpage
-\bibliographystyle{apalike}
+\bibliographystyle{apa}
 \bibliography{bibliography} 
  
 % spis tabel
@@ -68,6 +67,6 @@
 \listoffigures
 
 % dodatek, załącznik
-\include{appendix}
+%\include{appendix}
 
 \end{document}

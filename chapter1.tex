@@ -1,22 +1,110 @@
-\chapter{Klasyfikacja metod optymalizacji programu}
+\chapter{Wpływ aliasingu na optymalność kodu wykonywalnego}
 \label{chap:pierwszy}
+Rolą optymalizatora w procesie kompilacji jest przekształcenie wejściowej \textit{reprezentacji pośredniej} na formę bardziej optymalną, opierając się przy tym na informacjach o programie uzyskanych poprzez analizę reprezentacji pośredniej. 
 
-\section{Model kompilacji języka C++}
+\begin{defn}[Reprezentacja pośrednia 	(ang. Intermediate Representation - IR)]
+	\label{reprezentacja-posrednia}
+	Zestaw struktur danych użytych przez kompilator do reprezentacji programu wejściowego Źródło: \citep{EngineeringACompiler}.
+	\end{defn}
 
-\section{Metody optymalizacji intraproceduralnej}
+Optymalność jest pojęciem bliżej niezdefiniowanym - zazwyczaj za jej kryterium przyjmuje się prędkość wykonania programu. Możliwe jest również rozważanie optymalności przez pryzmat rozmiaru pliku wykonywalnego, wykorzystania pamięci czy też poboru mocy urządzenia wykonującego program. 
+Rola optymalizatora w klasycznej architekturze trójczęściowej kompilatora jest ograniczona do optymalizacji wysokopoziomowych. Optymalizator nie jest odpowiedzialny za generację wynikowego kodu wykonywalnego - w związku z tym efekt jego pracy nie jest uzależniony od platformy docelowej programu. 
+Proces optymalizacji programu ma miejsce podczas jednego lub więcej \textit{przebiegu optymalizacyjnego}.
+\begin{defn}[Przebieg optymalizacyjny]
+	Operacja potencjalnie modyfikująca reprezentację pośrednią programu w sposób nie zmieniający jej znaczenia semantycznego  \citep{EngineeringACompiler}.
+\end{defn}
+Specyficzną cechą przebiegów optymalizacyjnych jest to, że ich końcowy wpływ na program jest zależny od zestawu przebiegów, który zostanie zastosowany przez optymalizator. Zastosowanie konkretnego przebiegu optymalizacyjnego może ujawnić nowe informacje o programie, które zostaną wykorzystane przez inny przebieg w \textit{sekwencji przebiegów optymalizacyjnych}. Z tego powodu niektóre przebiegi optymalizacyjne (jak na przykład propagacja wartości stałych) są wykonywane kilkukrotnie w ciągu całej sekwencji.
+\begin{defn}[Sekwencja przebiegów optymalizacyjnych]
+	Zestaw przebiegów optymalizacyjnych wykonany w określonej kolejności
+	\citep{EngineeringACompiler}.
+	
+	\end{defn}
 
-\subsection{Inlinowanie}
+\section {Architektura platformy LLVM}
+\section{Znaczenie aliasingu w optymalizacji}
+
+\subsection{Definicja aliasingu}
+Aliasing wartości dotyczy sytuacji, w których więcej niż jeden wskaźnik w danym kontekście odnosi się do tego samego obiektu w programie. Wskaźniki A i B aliasują siebie, jeśli oba wskazują na ten sam obiekt. W tej sytuacji część optymalizacji związanych z odczytem lub zapisem do pamięci może zmienić wynik programu. W praktyce nawet potencjał wystąpienia aliasingu wymaga od kompilatora konserwatywności w zastosowanych optymalizacjach.
+
+Sztandarowym przykładem aliasowania wskaźników jest następująca funkcja języka C:
+\begin{lstlisting}[language=C]
+int double_and_update(int* counter, const int* argument) {
+  int counter_value = *argument;
+  *counter = *counter + 1;
+  return counter_value + *argument;
+}
+\end{lstlisting}
+Teoretycznie powyższy przykład wymaga dwóch odwołań do pamięci - w linii 2 oraz 3. Dereferencja w czwartej linii może zostać zoptymalizowana przez wykorzystanie wartości zmiennej counter\_value. 
+Niestety powyższe założenia są błędne - mimo, że zmienna argument jest oznaczona jako stała (w kontekście sum\_and\_update nie jest możliwy zapis wartości pod adresem wskazywanym przez tą zmienną), to nie jest wykluczone, że counter oraz argument wskazują na ten sam obiekt. 
+\begin{lstlisting}[language={[x86masm]Assembler}]
+double_and_update(int*, int const*):
+  mov     eax, DWORD PTR [rsi]
+  add     DWORD PTR [rdi], 1
+  add     eax, DWORD PTR [rsi]
+  ret
+\end{lstlisting}
+W uproszczeniu, zasady aliasingu języka C sprowadzają się do następujących założeń - wskaźnik na zmienną A może aliasować wskaźnik na zmienną B, jeśli typ A i typ B są takie same (pomijając modyfikatory const oraz volatile) lub przynajmniej jeden z tych typów to char (ze znakiem lub bez).
+
+W oparciu o tę wiedzę można zmienić typ jednego z argumentów, by uzyskać efekt docelowy.
+
+\begin{lstlisting}[language=C]
+int double_and_update(long* counter, const int* argument) {
+  int counter_value = *argument;
+  *counter = *counter + 1;
+  return counter_value + *argument;
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[language={[x86masm]Assembler}]
+double_and_update(long*, int const*):
+  mov     eax, DWORD PTR [rsi]
+  add     QWORD PTR [rdi], 1
+  add     eax, eax
+  ret
+\end{lstlisting}
+\subsection{Klasyfikacja algorytmów do analizy aliasingu}
+Algorytmy stosowane w analizie aliasingu można podzielić ze względu na kilka kryteriów \citep{HindPointerAnalysisHaventWeSolvedThisProblemYet}:
+\begin{enumerate}
+	\item{\textbf{Uwzględnienie grafu przepływu sterowania}
+		 	Wykorzystując informacje o przepływie sterowania możliwe jest określenie dla dowolnego punktu w programie, czy wybrane dwa adresy pamięci są sobie równoważne.  Pominięcie tego czynnika w analizie prowadzi do znacznie lepszej wydajności (co sprawia, że algorytmy nie wykorzystujące grafu przepływu sterowania są częściej wykorzystywane w praktyce), lecz znacznie ogranicza precyzję oraz zakres analizy.
+		 \begin{defn}[Blok podstawowy] Liniowa sekwencja instrukcji z jednym punktem wejściowym (którym jest pierwsza wykonana instrukcja) oraz jednym punktem wyjściowym (ostatnią wykonaną instrukcją). Blok bazowy może mieć wiele poprzedników (może istnieć wiele punktów w programie, w których kontrola wykonania przechodzi do danego bloku podstawowego). Punkty wejściowe programy nie mają poprzedników, zaś punkty wyjściowe nie mają następców \citep{ControlFlowAnalysis}.\end{defn}
+	 \begin{defn}[Graf przepływu sterowania] Graf ukierunkowany, w którym wierzchołki przedstawiają bloki podstawowe będące częścią danego programu, zaś krawędzie określają przepływ sterowania między nimi \citep{ControlFlowAnalysis}.\end{defn}}
+\item{\textbf{Uwzględnienie kontekstu wywołania funkcji}
+Algorytm może wykorzystywać kontekst wywołania funkcji (przykładowo: czy wszystkie wywołania funkcji zawierają potencjalnie aliasujące argumenty) w celu uzyskania dokładniejszego wyniku.
+}
+\item{\textbf{Modelowanie alokacji}
+Algorytm może utożsamiać obiekt z jego punktem alokacji w programie lub wykorzystywać bardziej złożone kryteria - przykładowo przez analizę "kształtu" programu (ang. program shape analysis) \citep{ShapeAnalysis}. }
+\item{\textbf{Modelowanie typów złożonych}
+Czy algorytm rozróżnia podobiekty typów złożonych (jak na przykład tablice lub struktury), czy traktuje je wszystkie jako jeden obiekt - ze względu na przynależność do jednego nadobiektu?}
+\item{\textbf{Zakres analizy}
+	Analiza może być wykonalna jedynie w kontekście całego programu lub jego mniejszych części.
+}
+\end{enumerate}
+
+\subsection{Intraproceduralna analiza aliasingu}
+\subsection{Analiza oparta na zasadach}
+\subsubsection{Algorytm Steensgarda}
+\subsubsection{Algorytm Andersena}
+\subsection{Interproceduralna analiza aliasingu}
+
+\section{Inne metody optymalizacji programu}
+
+\subsection{Metody optymalizacji intraproceduralnej}
+
+\subsubsection{Inlinowanie}
 
 \subsubsection{Częściowa ewaluacja}
 
 \subsubsection{Eliminacja martwego kodu}
 
-\subsection{Dewirtualizacja}
+\subsubsection{Dewirtualizacja}
 
-\section{Metody optymalizacji interproceduralnej}
-\subsection{Optymalizacja interproceduralna - Interprocedural Optimization (IPO)}
+\subsection{Metody optymalizacji interproceduralnej}
+\subsubsection{Optymalizacja interproceduralna - Interprocedural Optimization (IPO)}
 
-\subsection{Optymalizacja w czasie konsolidacji - Link-Time Optimization (LTO)}
+\subsubsection{Optymalizacja w czasie konsolidacji - Link-Time Optimization (LTO)}
 
 \subsubsection{Internalizacja}
+
 
